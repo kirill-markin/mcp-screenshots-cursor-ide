@@ -104,15 +104,12 @@ class ScreenshotServer {
           url: options.url,
           fullPage: options.fullPage
         });
-
-        // Add MIME type prefix for base64
-        const base64Image = `data:image/webp;base64,${screenshot.toString('base64')}`;
         
         return {
           content: [
             {
               type: 'text',
-              text: base64Image
+              text: 'Screenshot has been copied to clipboard and Ctrl+V was simulated to paste it.'
             }
           ]
         };
