@@ -5,8 +5,8 @@
   "private": false,
   "type": "module",
   "bin": {
-    "mcp-screenshots-cursor-ide": "./build/src/index.js",
-    "mcp-screenshots-cursor-ide-test": "./build/test/cli.js"
+    "mcp-screenshots-cursor-ide": "build/src/index.js",
+    "mcp-screenshots-cursor-ide-test": "build/test/cli.js"
   },
   "files": [
     "build",
@@ -36,19 +36,16 @@
     "inspector": "npx @modelcontextprotocol/inspector build/src/index.js"
   },
   "dependencies": {
-    "@crosscopy/clipboard": "^0.2.8",
     "@modelcontextprotocol/sdk": "0.6.0",
     "@nut-tree-fork/nut-js": "^4.2.6",
-    "@types/sharp": "^0.31.1",
     "chrome-launcher": "^1.1.2",
-    "clipboardy": "^4.0.0",
-    "copy-image-clipboard": "^2.1.2",
     "img-clipboard": "^1.1.0",
     "puppeteer": "^23.11.1",
     "sharp": "^0.34.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
+    "@types/sharp": "^0.31.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
