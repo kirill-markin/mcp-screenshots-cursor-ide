@@ -1,7 +1,8 @@
-# Cursor Screenshot Server Rules
+# Cursor Screenshot MCP Package
 
 ## Project
 - MCP server for Cursor IDE screenshots
+- Published as npm package @kirill-markin/mcp-screenshots-cursor-ide
 - Uses Puppeteer & Chrome
 - Node.js/TypeScript
 - Auto clipboard + paste integration
@@ -24,9 +25,12 @@
 
 ## Testing
 - Manual testing only
-- Use test/manual-screenshot.ts
+- CLI test tool: mcp-screenshots-cursor-ide-test
 
-## Build
+## Build & Usage
 - npm run build
 - npm run watch (development)
-- npm run inspector (testing) 
+- npm run inspector (testing)
+- npm install -g @kirill-markin/mcp-screenshots-cursor-ide@latest (installation)
+- mcp-screenshots-cursor-ide (run server)
+- npx @kirill-markin/mcp-screenshots-cursor-ide@latest/mcp-screenshots-cursor-ide-test <url> (test) 

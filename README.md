@@ -20,12 +20,28 @@ A [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/mcp) se
 ## Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/kirill-markin/mcp-screenshots-cursor-ide
-cd mcp-screenshots-cursor-ide
+# Install globally
+npm install -g @kirill-markin/mcp-screenshots-cursor-ide@latest
 
-# Install dependencies
-npm install
+# Or install locally in your project
+npm install @kirill-markin/mcp-screenshots-cursor-ide@latest
+```
+
+## Configuring with Cursor IDE
+
+Add globaly in Cursor IDE settings or locally in your project to your `~/.cursor/mcp.json` file:
+
+```json
+{
+  "mcpServers": {
+    "screenshot": {
+      "command": "npx",
+      "args": [
+        "@kirill-markin/mcp-screenshots-cursor-ide@latest"
+      ]
+    }
+  }
+}
 ```
 
 ## Usage
@@ -44,23 +60,23 @@ This server implements the MCP protocol's tool interface, exposing a `take_scree
 ### Running the Server
 
 ```bash
-# Build the project
-npm run build
+# If installed globally
+mcp-screenshots-cursor-ide
 
-# Run the MCP inspector for testing
-npm run inspector
+# If installed locally
+npx mcp-screenshots-cursor-ide
 ```
 
 ### Manual Testing
 
-The repository includes a test script for manual screenshot testing:
+The package includes a test script for manual screenshot testing:
 
 ```bash
 # Take a screenshot of a specific URL
-node build/test/manual-screenshot.js https://example.com
+npx @kirill-markin/mcp-screenshots-cursor-ide@latest/mcp-screenshots-cursor-ide-test https://example.com
 
 # Take a full-page screenshot
-node build/test/manual-screenshot.js https://example.com --full-page
+npx @kirill-markin/mcp-screenshots-cursor-ide@latest/mcp-screenshots-cursor-ide-test https://example.com --full-page
 ```
 
 ## Development
@@ -84,4 +100,4 @@ npm run watch
 
 ## License
 
-MIT
+[MIT](LICENSE)

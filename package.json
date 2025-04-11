@@ -1,17 +1,36 @@
 {
-  "name": "screenshot-server",
-  "version": "0.1.0",
-  "description": "MCP Server to Capture Screen",
-  "private": true,
+  "name": "@kirill-markin/mcp-screenshots-cursor-ide",
+  "version": "1.0.0",
+  "description": "MCP Screenshot Server for Cursor IDE with automatic clipboard integration",
+  "private": false,
   "type": "module",
   "bin": {
-    "screenshot-server": "./build/src/index.js"
+    "mcp-screenshots-cursor-ide": "./build/src/index.js",
+    "mcp-screenshots-cursor-ide-test": "./build/test/cli.js"
   },
   "files": [
-    "build"
+    "build",
+    "README.md",
+    "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "cursor-ide",
+    "mcp",
+    "screenshot",
+    "clipboard",
+    "automation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirill-markin/mcp-screenshots-cursor-ide.git"
+  },
+  "author": "Kirill Markin",
+  "license": "MIT",
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/src/index.js', '755')\"",
+    "build": "tsc && node -e \"require('fs').chmodSync('build/src/index.js', '755') && require('fs').chmodSync('build/test/cli.js', '755')\"",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector build/src/index.js"
