@@ -21,8 +21,8 @@ A [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/mcp) se
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/mcp-screenshot-server.git
-cd mcp-screenshot-server
+git clone https://github.com/kirill-markin/mcp-screenshots-cursor-ide
+cd mcp-screenshots-cursor-ide
 
 # Install dependencies
 npm install
