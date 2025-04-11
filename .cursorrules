@@ -1,0 +1,32 @@
+# Cursor Screenshot Server Rules
+
+## Project
+- MCP server for Cursor IDE screenshots
+- Uses Puppeteer & Chrome
+- Node.js/TypeScript
+- Auto clipboard + paste integration
+- Auto Ctrl+V/Cmd+V simulation
+
+## Dependencies
+- puppeteer
+- chrome-launcher
+- sharp
+- img-clipboard
+- @nut-tree-fork/nut-js
+- @modelcontextprotocol/sdk
+
+## Code Style
+- TypeScript with strict typing
+- ES modules (type: module)
+- Functional over OOP
+- Error handling with try/finally
+- Async/await patterns
+
+## Testing
+- Manual testing only
+- Use test/manual-screenshot.ts
+
+## Build
+- npm run build
+- npm run watch (development)
+- npm run inspector (testing) 
