@@ -1,5 +1,18 @@
-Screenshots/
-test.html
+# Ignore all files in test-screenshots
+test-screenshots/*
+
+# But don't ignore this specific file
+!test-screenshots/https---www-google-com-2025-04-11T13-46-31-402Z.webp
+
+# Node modules and build
 node_modules/
 build/
+
+# IDE and OS files
 .DS_Store
+.idea/
+.vscode/
+*.log
+
+# package-lock.json
+package-lock.json

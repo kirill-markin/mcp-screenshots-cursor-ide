@@ -5,23 +5,29 @@
   "private": true,
   "type": "module",
   "bin": {
-    "screenshot-server": "./build/index.js"
+    "screenshot-server": "./build/src/index.js"
   },
   "files": [
     "build"
   ],
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "build": "tsc && node -e \"require('fs').chmodSync('build/src/index.js', '755')\"",
     "prepare": "npm run build",
     "watch": "tsc --watch",
-    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+    "inspector": "npx @modelcontextprotocol/inspector build/src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
-    "puppeteer": "^23.11.1"
+    "@types/sharp": "^0.31.1",
+    "chrome-launcher": "^1.1.2",
+    "clipboardy": "^4.0.0",
+    "puppeteer": "^23.11.1",
+    "robotjs": "^0.6.0",
+    "sharp": "^0.34.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }

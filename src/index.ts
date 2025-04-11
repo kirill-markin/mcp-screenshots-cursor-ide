@@ -7,21 +7,15 @@ import {
   ListToolsRequestSchema,
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
-import puppeteer from 'puppeteer';
-import path from 'path';
-import fs from 'fs';
+import { takeScreenshot, ScreenshotOptions } from './screenshot.js';
 
-interface ScreenshotOptions {
+interface McpScreenshotOptions {
   url: string;
-  width?: number;
-  height?: number;
   fullPage?: boolean;
-  outputPath?: string;
 }
 
 class ScreenshotServer {
   private server: Server;
-  private outputDir: string;
 
   constructor() {
     this.server = new Server(
@@ -42,26 +36,10 @@ class ScreenshotServer {
                     type: 'string',
                     description: 'URL to capture (can be http://, https://, or file:///)',
                   },
-                  width: {
-                    type: 'number',
-                    description: 'Viewport width in pixels',
-                    minimum: 1,
-                    maximum: 3840,
-                  },
-                  height: {
-                    type: 'number',
-                    description: 'Viewport height in pixels',
-                    minimum: 1,
-                    maximum: 2160,
-                  },
                   fullPage: {
                     type: 'boolean',
-                    description: 'Capture full scrollable page',
-                  },
-                  outputPath: {
-                    type: 'string',
-                    description: 'Custom output path (optional)',
-                  },
+                    description: 'Set to true only if you really need full page screenshot, defaults to false',
+                  }
                 },
                 required: ['url'],
               },
@@ -70,16 +48,6 @@ class ScreenshotServer {
         },
       }
     );
-
-    // Create Screenshots directory in project directory
-    const projectDir = path.dirname(new URL(import.meta.url).pathname);
-    console.error(`Project directory: ${projectDir}`);
-    this.outputDir = path.join(projectDir, '..', 'Screenshots');
-    console.error(`Creating Screenshots directory at: ${this.outputDir}`);
-    if (!fs.existsSync(this.outputDir)) {
-      fs.mkdirSync(this.outputDir, { recursive: true });
-    }
-    console.error(`Screenshots directory created/verified at: ${this.outputDir}`);
 
     this.setupToolHandlers();
     
@@ -104,26 +72,10 @@ class ScreenshotServer {
                 type: 'string',
                 description: 'URL to capture (can be http://, https://, or file:///)',
               },
-              width: {
-                type: 'number',
-                description: 'Viewport width in pixels',
-                minimum: 1,
-                maximum: 3840,
-              },
-              height: {
-                type: 'number',
-                description: 'Viewport height in pixels',
-                minimum: 1,
-                maximum: 2160,
-              },
               fullPage: {
                 type: 'boolean',
-                description: 'Capture full scrollable page',
-              },
-              outputPath: {
-                type: 'string',
-                description: 'Custom output path (optional)',
-              },
+                description: 'Set to true only if you really need full page screenshot, defaults to false',
+              }
             },
             required: ['url'],
           },
@@ -139,7 +91,7 @@ class ScreenshotServer {
         );
       }
 
-      const options = request.params.arguments as unknown as ScreenshotOptions;
+      const options = request.params.arguments as unknown as McpScreenshotOptions;
       if (!options?.url) {
         throw new McpError(
           ErrorCode.InvalidParams,
@@ -148,59 +100,21 @@ class ScreenshotServer {
       }
       
       try {
-        const browser = await puppeteer.launch({
-          headless: true,
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        const screenshot = await takeScreenshot({
+          url: options.url,
+          fullPage: options.fullPage
         });
 
-        const page = await browser.newPage();
+        // Add MIME type prefix for base64
+        const base64Image = `data:image/webp;base64,${screenshot.toString('base64')}`;
         
-        // Set viewport if dimensions provided
-        if (options.width && options.height) {
-          await page.setViewport({
-            width: options.width,
-            height: options.height,
-          });
-        }
-
-        // Navigate to URL
-        await page.goto(options.url, {
-          waitUntil: 'networkidle0',
-          timeout: 30000,
-        });
-
-        // Generate filename with timestamp
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const filename = `screenshot-${timestamp}.png`;
-        
-        // If outputPath is provided, ensure it's relative to current working directory
-        const outputPath = options.outputPath 
-          ? path.join(process.cwd(), options.outputPath)
-          : path.join(this.outputDir, filename);
-
-        // Ensure output directory exists
-        const outputDir = path.dirname(outputPath);
-        if (!fs.existsSync(outputDir)) {
-          fs.mkdirSync(outputDir, { recursive: true });
-        }
-
-        // Take screenshot
-        await page.screenshot({
-          path: outputPath,
-          fullPage: options.fullPage || false,
-        });
-
-        await browser.close();
-
-        // Return path relative to current working directory
-        const relativePath = path.relative(process.cwd(), outputPath);
         return {
           content: [
             {
               type: 'text',
-              text: `Screenshot saved to: ${relativePath}`,
-            },
-          ],
+              text: base64Image
+            }
+          ]
         };
       } catch (error: any) {
         return {
